@@ -1,0 +1,67 @@
+.bubbles {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  overflow: hidden;
+  background: linear-gradient(180deg, #d9eaff 0%, #edf5ff 50%, var(--bg) 100%);
+  touch-action: none;
+}
+
+/* Two soft clouds, each a pill with a couple of puffs on top. */
+.bubbles::before,
+.bubbles::after {
+  content: "";
+  position: absolute;
+  width: 22vmin;
+  height: 7vmin;
+  border-radius: 7vmin;
+  background: rgba(255, 255, 255, .8);
+  box-shadow:
+    5vmin -3.5vmin 0 1vmin rgba(255, 255, 255, .8),
+    12vmin -2.5vmin 0 0 rgba(255, 255, 255, .8);
+}
+
+.bubbles::before { top: 16%; left: 9%; }
+.bubbles::after  { top: 44%; right: 14%; transform: scale(.75); }
+
+/* Positioned every frame from game.js; the skin lives on ::before so it can
+   wobble without fighting that transform. */
+.bubble {
+  position: absolute;
+  top: 0; left: 0;
+  will-change: transform;
+}
+
+.bubble::before {
+  content: "";
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  border: 3px solid var(--cd);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 26%, rgba(255, 255, 255, .95) 0, rgba(255, 255, 255, .95) 8%, rgba(255, 255, 255, 0) 27%),
+    radial-gradient(circle at 64% 70%, rgba(255, 255, 255, .45) 0, rgba(255, 255, 255, 0) 55%),
+    var(--c);
+  opacity: .93;
+  animation: bubble-wobble 2.4s ease-in-out infinite alternate;
+}
+
+.bubble svg {
+  position: absolute;
+  top: 22%; left: 22%;
+  width: 56%;
+  height: 56%;
+  fill: var(--surface);
+  stroke: var(--cd);
+  stroke-width: 6;
+  stroke-linejoin: round;
+  animation: bubble-star 4s linear infinite;
+}
+
+@keyframes bubble-wobble {
+  from { transform: scale(1.04, .96); }
+  to   { transform: scale(.96, 1.04); }
+}
+
+@keyframes bubble-star {
+  to { transform: rotate(360deg); }
+}

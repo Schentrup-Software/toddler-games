@@ -1,0 +1,262 @@
+/* Palette. Every colour used anywhere on the site comes from here; games pick
+   a hue by adding a .c-<name> class, which sets --c (fill) and --cd (edge). */
+:root {
+  --bg: #fff7ee;
+  --surface: #ffffff;
+  --ink: #6a5d7b;
+  --ink-rgb: 106, 93, 123;
+
+  --coral: #ffb8b8;   --coral-deep: #f08f8f;
+  --peach: #ffd3a8;   --peach-deep: #f2ae72;
+  --butter: #fff1a6;  --butter-deep: #ebcb5a;
+  --mint: #beebc8;    --mint-deep: #86ce9a;
+  --aqua: #b4e9e6;    --aqua-deep: #7ccdc8;
+  --sky: #bbdcff;     --sky-deep: #86b8f0;
+  --lilac: #d8c8f8;   --lilac-deep: #ae98e4;
+  --pink: #ffc9e3;    --pink-deep: #f29cc4;
+
+  --font: ui-rounded, "SF Pro Rounded", "Nunito", "Quicksand", "Varela Round",
+    "Arial Rounded MT Bold", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+}
+
+.c-coral  { --c: var(--coral);  --cd: var(--coral-deep); }
+.c-peach  { --c: var(--peach);  --cd: var(--peach-deep); }
+.c-butter { --c: var(--butter); --cd: var(--butter-deep); }
+.c-mint   { --c: var(--mint);   --cd: var(--mint-deep); }
+.c-aqua   { --c: var(--aqua);   --cd: var(--aqua-deep); }
+.c-sky    { --c: var(--sky);    --cd: var(--sky-deep); }
+.c-lilac  { --c: var(--lilac);  --cd: var(--lilac-deep); }
+.c-pink   { --c: var(--pink);   --cd: var(--pink-deep); }
+
+*, *::before, *::after { box-sizing: border-box; }
+
+[hidden] { display: none !important; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+/* Little hands rest on the screen, long-press, pinch and drag. None of that
+   should select text, zoom, scroll the page away or open a browser menu. */
+body {
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  -webkit-text-size-adjust: 100%;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+
+/* ---------- Home ---------- */
+
+.home {
+  position: fixed;
+  top: 0; right: 0; bottom: 0; left: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  padding:
+    calc(20px + var(--safe-top)) calc(24px + var(--safe-right))
+    calc(32px + var(--safe-bottom)) calc(24px + var(--safe-left));
+  background:
+    radial-gradient(circle at 6% 4%, rgba(255, 201, 227, .7) 0, rgba(255, 201, 227, 0) 22rem),
+    radial-gradient(circle at 96% 10%, rgba(187, 220, 255, .7) 0, rgba(187, 220, 255, 0) 24rem),
+    radial-gradient(circle at 84% 98%, rgba(190, 235, 200, .7) 0, rgba(190, 235, 200, 0) 24rem),
+    radial-gradient(circle at 10% 96%, rgba(255, 241, 166, .7) 0, rgba(255, 241, 166, 0) 22rem),
+    var(--bg);
+}
+
+.home__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.home__title {
+  margin: 0;
+  font-size: clamp(2rem, 6vw, 3.25rem);
+  font-weight: 800;
+  letter-spacing: .01em;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: clamp(18px, 3vw, 34px);
+  width: 100%;
+  max-width: 1100px;
+  /* Centred while there are only a few games; scrolls once there are many. */
+  margin: auto;
+  padding: 28px 0 12px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 250px;
+  padding: 22px 16px 20px;
+  border-radius: 38px;
+  background: var(--c);
+  color: var(--ink);
+  text-decoration: none;
+  box-shadow: 0 10px 0 var(--cd), 0 22px 30px rgba(var(--ink-rgb), .14);
+  transition: transform .12s ease-out, box-shadow .12s ease-out;
+  animation: card-in .5s cubic-bezier(.3, 1.4, .6, 1) both;
+  animation-delay: calc(var(--i) * 70ms);
+}
+
+.card:active {
+  transform: translateY(8px);
+  box-shadow: 0 2px 0 var(--cd), 0 8px 14px rgba(var(--ink-rgb), .14);
+}
+
+.card:focus-visible,
+.round-btn:focus-visible {
+  outline: 4px solid var(--ink);
+  outline-offset: 4px;
+}
+
+.card__art {
+  width: 72%;
+  max-width: 220px;
+  animation: bob 3.2s ease-in-out infinite alternate;
+  animation-delay: calc(var(--i) * -900ms);
+}
+
+.card__art svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.card__name {
+  margin-top: 10px;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 800;
+}
+
+@keyframes card-in {
+  from { opacity: 0; transform: translateY(24px) scale(.92); }
+}
+
+@keyframes bob {
+  from { transform: translateY(-4px) rotate(-1.5deg); }
+  to   { transform: translateY(4px) rotate(1.5deg); }
+}
+
+/* ---------- Round buttons (full screen, home) ---------- */
+
+.round-btn {
+  position: relative;
+  flex: none;
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .88);
+  color: var(--ink);
+  box-shadow: 0 4px 0 rgba(var(--ink-rgb), .16);
+  font: inherit;
+  cursor: pointer;
+  touch-action: none;
+}
+
+.round-btn svg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+
+/* ---------- Play ---------- */
+
+.play {
+  position: fixed;
+  top: 0; right: 0; bottom: 0; left: 0;
+  touch-action: none;
+}
+
+.stage {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  overflow: hidden;
+}
+
+/* A stray palm must not end the game, so going home takes a press-and-hold.
+   The ring fills while held; --hold is set from js/app.js. */
+.home-btn {
+  position: absolute;
+  top: calc(12px + var(--safe-top));
+  right: calc(12px + var(--safe-right));
+  z-index: 100;
+}
+
+.home-btn .home-btn__ring {
+  padding: 0;
+  transform: rotate(-90deg);
+}
+
+.home-btn__ring circle {
+  stroke: var(--pink-deep);
+  stroke-width: 6;
+  stroke-dasharray: 183;
+  stroke-dashoffset: 183;
+  transition: stroke-dashoffset .2s ease-out;
+}
+
+.home-btn.is-holding .home-btn__ring circle {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset var(--hold) linear;
+}
+
+/* ---------- Shared effects (js/fx.js) ---------- */
+
+.fx {
+  position: absolute;
+  z-index: 50;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.fx--dot {
+  border-radius: 50%;
+  background: var(--cd);
+}
+
+.fx--confetti {
+  top: -24px;
+  width: 14px;
+  height: 22px;
+  border-radius: 5px;
+  background: var(--cd);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card, .card__art { animation: none; }
+}

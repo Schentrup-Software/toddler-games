@@ -1,0 +1,52 @@
+.music {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  background:
+    radial-gradient(circle at 50% 100%, rgba(255, 201, 227, .6) 0, rgba(255, 201, 227, 0) 70%),
+    var(--bg);
+  touch-action: none;
+}
+
+.xylo {
+  position: absolute;
+  top: 13%;
+  right: 4%;
+  bottom: 7%;
+  left: 4%;
+  display: flex;
+  align-items: center;
+  gap: 1.6vw;
+}
+
+/* --h comes from game.js: bars get shorter as the notes get higher. */
+.bar {
+  position: relative;
+  flex: 1;
+  height: var(--h);
+  border-radius: 3vw;
+  background: var(--c);
+  box-shadow: 0 10px 0 var(--cd), 0 20px 24px rgba(var(--ink-rgb), .12);
+}
+
+/* The two pegs that hold a xylophone bar down. */
+.bar::before,
+.bar::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: 2.4vw;
+  height: 2.4vw;
+  margin-left: -1.2vw;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .85);
+  box-shadow: inset 0 -3px 0 rgba(var(--ink-rgb), .12);
+}
+
+.bar::before { top: 7%; }
+.bar::after  { bottom: 7%; }
+
+/* Sparks fly off a bar of their own colour, so make them white to show up. */
+.music .fx--dot {
+  background: var(--surface);
+  box-shadow: inset 0 0 0 4px var(--cd);
+}

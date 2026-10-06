@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <title>Toddler Games</title>
+
+  <meta name="theme-color" content="#fff7ee">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Toddler Games">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+  <link rel="stylesheet" href="css/base.css">
+</head>
+<body>
+  <main id="home" class="home">
+    <header class="home__header">
+      <h1 class="home__title">Toddler Games</h1>
+      <button id="fullscreen-btn" class="round-btn" type="button" aria-label="Full screen" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/>
+        </svg>
+      </button>
+    </header>
+    <nav id="games" class="grid" aria-label="Games"></nav>
+  </main>
+
+  <div id="play" class="play" hidden>
+    <div id="stage" class="stage"></div>
+    <button id="home-btn" class="round-btn home-btn" type="button" aria-label="Home (press and hold)">
+      <svg class="home-btn__ring" viewBox="0 0 64 64" aria-hidden="true">
+        <circle cx="32" cy="32" r="29"/>
+      </svg>
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 11.5 12 5l8 6.5M6.5 10v9h11v-9"/>
+      </svg>
+    </button>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
