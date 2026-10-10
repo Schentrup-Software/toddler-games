@@ -1,0 +1,202 @@
+.find {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  background: var(--bg);
+}
+
+/* ---------- Choosing a scene ---------- */
+
+.find__picker {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  display: flex;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  /* The top padding keeps the pictures out from under the home button. */
+  padding:
+    calc(88px + var(--safe-top)) calc(24px + var(--safe-right))
+    calc(24px + var(--safe-bottom)) calc(24px + var(--safe-left));
+}
+
+.find__choices {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  /* Centred while the scenes fit on screen; scrolls once there are more. */
+  margin: auto;
+}
+
+.find__choice {
+  width: clamp(180px, 28vw, 320px);
+  margin: 1.5vmin;
+  padding: 10px 10px 8px;
+  border: 0;
+  border-radius: 30px;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 8px 0 rgba(var(--ink-rgb), .14), 0 16px 24px rgba(var(--ink-rgb), .1);
+  font: inherit;
+  cursor: pointer;
+  transition: transform .12s ease-out, box-shadow .12s ease-out;
+  animation: card-in .5s cubic-bezier(.3, 1.4, .6, 1) both;
+  animation-delay: calc(var(--i) * 60ms);
+}
+
+@media (orientation: portrait) {
+  .find__choice { width: clamp(180px, 40vw, 340px); }
+}
+
+.find__choice:active {
+  transform: translateY(6px);
+  box-shadow: 0 2px 0 rgba(var(--ink-rgb), .14), 0 6px 10px rgba(var(--ink-rgb), .1);
+}
+
+.find__choice:focus-visible,
+.find__prompt:focus-visible {
+  outline: 4px solid var(--ink);
+  outline-offset: 4px;
+}
+
+.find__thumb {
+  display: block;
+  overflow: hidden;
+  border-radius: 22px;
+  pointer-events: none;
+}
+
+.find__thumb .find__picture { height: auto; }
+
+.find__name {
+  display: block;
+  padding-top: 6px;
+  font-size: clamp(1.2rem, 2.6vmin, 1.6rem);
+  font-weight: 800;
+}
+
+/* ---------- Playing a scene ---------- */
+
+.find__play {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  display: flex;
+  flex-direction: column;
+  touch-action: none;
+}
+
+/* Back to the scene picker. Mirrors the home button in the opposite corner,
+   and needs the same press-and-hold. */
+.find__back {
+  position: absolute;
+  top: calc(12px + var(--safe-top));
+  left: calc(12px + var(--safe-left));
+  z-index: 5;
+}
+
+/* The word to find. The whole pill is a button that says the word again. */
+.find__prompt {
+  flex: none;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  /* Leave room for the round buttons in the two top corners. */
+  max-width: calc(100% - 184px);
+  margin: calc(12px + var(--safe-top)) 0 14px;
+  padding: 1.2vmin 5vmin 1.2vmin 1.6vmin;
+  border: 0;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 5px 0 rgba(var(--ink-rgb), .14);
+  font: inherit;
+  cursor: pointer;
+  touch-action: none;
+  transition: transform .1s ease-out;
+}
+
+.find__prompt:active { transform: translateY(3px); }
+
+.find__prompt svg {
+  flex: none;
+  width: 9vmin;
+  height: 9vmin;
+  margin-right: 2.5vmin;
+  padding: 2vmin;
+  border-radius: 50%;
+  background: var(--mint);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.find__word {
+  font-size: clamp(2.5rem, 9vmin, 5rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: .02em;
+}
+
+/* The scene keeps its 4:3 shape and is centred; its sky and ground are drawn
+   far past its edges, so they fill whatever space is left over. */
+.find__scene {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.find__scene .find__picture {
+  height: 100%;
+  overflow: visible;
+  animation: find-scene-in .5s ease-out;
+}
+
+/* ---------- A scene, as drawn by game.js from scenes.js ---------- */
+
+.find__picture {
+  display: block;
+  width: 100%;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Colour classes used by scenes.js. */
+.find__picture .f   { fill: var(--c);  stroke: var(--cd); }
+.find__picture .fd  { fill: var(--cd); stroke: var(--cd); }
+.find__picture .s   { fill: none;      stroke: var(--cd); }
+.find__picture .bg  { fill: var(--c);  stroke: none; }
+.find__picture .bgd { fill: var(--cd); stroke: none; }
+.find__picture .w   { fill: var(--surface); stroke: rgba(var(--ink-rgb), .3); }
+.find__picture .k   { fill: var(--ink); stroke: none; }
+.find__picture .l   { fill: none; stroke: var(--ink); }
+
+.find__scene .thing { cursor: pointer; }
+
+.thing__hit {
+  fill: transparent;
+  stroke: none;
+  pointer-events: all;
+}
+
+/* Animated from game.js; swinging from the bottom looks like a wobble. */
+.thing__art {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+
+.thing.is-hint .thing__art {
+  animation: find-hint 1s ease-in-out infinite;
+}
+
+@keyframes find-scene-in {
+  from { opacity: 0; }
+}
+
+@keyframes find-hint {
+  0%, 100% { transform: rotate(0) scale(1); }
+  25% { transform: rotate(-6deg) scale(1.1); }
+  75% { transform: rotate(6deg) scale(1.1); }
+}

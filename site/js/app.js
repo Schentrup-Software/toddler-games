@@ -1,7 +1,7 @@
 import { initAudio } from './audio.js';
+import { holdButton } from './hold.js';
 import { games } from './registry.js';
-
-const HOLD_MS = 700; // how long the home button must be held to leave a game
+import { initSpeech } from './speech.js';
 
 const home = document.getElementById('home');
 const grid = document.getElementById('games');
@@ -66,31 +66,6 @@ function goHome() {
   location.hash = '#/';
 }
 
-function initHomeButton() {
-  let timer = 0;
-  homeBtn.style.setProperty('--hold', `${HOLD_MS}ms`);
-
-  const release = () => {
-    clearTimeout(timer);
-    homeBtn.classList.remove('is-holding');
-  };
-  homeBtn.addEventListener('pointerdown', () => {
-    release();
-    homeBtn.classList.add('is-holding');
-    timer = setTimeout(() => {
-      release();
-      goHome();
-    }, HOLD_MS);
-  });
-  for (const type of ['pointerup', 'pointercancel', 'pointerleave']) {
-    homeBtn.addEventListener(type, release);
-  }
-  // Keyboards and screen readers "click" without a pointer; let those through.
-  homeBtn.addEventListener('click', (e) => {
-    if (e.detail === 0) goHome();
-  });
-}
-
 function initFullscreen() {
   const root = document.documentElement;
   const enter = root.requestFullscreen || root.webkitRequestFullscreen;
@@ -115,7 +90,8 @@ function childProof() {
 
 childProof();
 initAudio();
-initHomeButton();
+initSpeech();
+holdButton(homeBtn, goHome);
 initFullscreen();
 renderHome();
 window.addEventListener('hashchange', route);

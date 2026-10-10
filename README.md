@@ -9,13 +9,15 @@ nothing is fetched from the internet once it is running on your network.
 | **Bubbles** | Tap or swipe the floating bubbles to pop them. Every so often a star bubble floats up and throws confetti. |
 | **Shapes** | Drag each shape into the hole it fits. Fill all three for a celebration and a new set. |
 | **Music** | A rainbow xylophone. Tap a bar, slide across them, or use both hands. |
+| **Find It** | Pick a picture: garden, bedroom, farm, kitchen or beach. A word is then shown and spoken ("Find the duck"). Touch that thing in the picture. Touching anything else names it instead ("That's the cat"), and the answer wiggles after two misses. Five scenes, 55 words. |
 
 Built for small hands:
 
 - Nothing to read, and no scores, timers or ways to lose.
 - Big targets, and every finger on the screen counts.
 - The home button (top right, in a game) needs a **press-and-hold**, so a stray
-  palm doesn't end the game.
+  palm doesn't end the game. So does the button at the top left of a Find It
+  scene, which goes back to the pictures.
 - Zooming, text selection and long-press menus are switched off.
 
 ## Host it on TrueNAS
@@ -80,6 +82,11 @@ To update, copy the new files over the old ones. No restart is needed.
 - **Android:** tap the full-screen button at the top right of the home screen.
   App pinning (Settings → Security) keeps a child from leaving it.
 
+Find It speaks with the tablet's own text-to-speech voice, so it sounds like
+whatever voice the tablet has. If it is silent, turn the media volume up, check
+that a voice is installed in the tablet's text-to-speech settings, and tap the
+word at the top of the game to hear it again.
+
 ## Run it on your own computer
 
 ```sh
@@ -122,6 +129,29 @@ Things to reuse:
 - [site/js/audio.js](site/js/audio.js) has the sounds (`mallet`, `pop`, `boop`,
   `chime`, `fanfare`). They are synthesised, so there are no audio files.
 - [site/js/fx.js](site/js/fx.js) has `burst` and `confetti`.
+- [site/js/speech.js](site/js/speech.js) has `say("any text")`, which speaks
+  with the device's voice.
+- [site/js/hold.js](site/js/hold.js) has `holdButton(button, onHeld)`, for
+  buttons a child shouldn't trigger by accident.
+
+## Add words to Find It
+
+The scenes live in [site/games/find/scenes.js](site/games/find/scenes.js). Each
+scene is a name, a background and a list of things, and each thing is one word:
+
+```js
+{
+  word: 'ball',        // shown on screen and spoken as "Find the ball"
+  at: [95, 655],       // where its centre goes on the 1000 x 750 scene
+  scale: 1.15,
+  art: `<circle class="c-coral f" r="40"/>`, // SVG drawn around (0, 0)
+}
+```
+
+Add a thing to an existing scene, or add a whole new scene to the `SCENES`
+list at the bottom of the file. A new scene shows up on the picker by itself,
+with a small copy of the scene as its picture. The game asks for every word in
+the chosen scene once, then goes back to the picker.
 
 ## Layout
 

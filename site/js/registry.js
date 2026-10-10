@@ -48,4 +48,21 @@ export const games = [
         <rect x="94"  y="42" width="16" height="36" rx="8" style="fill:var(--lilac);stroke:var(--lilac-deep)"/>
       </svg>`,
   },
+  {
+    id: 'find',
+    name: 'Find It',
+    color: 'mint',
+    art: `
+      <svg viewBox="0 0 120 120" aria-hidden="true" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M80 80 105 105" style="fill:none;stroke:var(--lilac-deep);stroke-width:14"/>
+        <circle cx="52" cy="52" r="38" style="fill:var(--surface);stroke:var(--lilac-deep);stroke-width:8"/>
+        <g transform="translate(54 55) scale(.6)" stroke-width="5" style="fill:var(--butter);stroke:var(--butter-deep)">
+          <path d="M28 8 46-8 38 18Z"/>
+          <path d="M-32-20-49-14-32-9Z" style="fill:var(--peach-deep);stroke:var(--peach-deep)"/>
+          <ellipse cx="4" cy="14" rx="32" ry="20"/>
+          <circle cx="-18" cy="-16" r="17"/>
+          <circle cx="-23" cy="-20" r="3.6" style="fill:var(--ink);stroke:none"/>
+        </g>
+      </svg>`,
+  },
 ];
