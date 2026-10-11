@@ -80,12 +80,31 @@ To update, copy the new files over the old ones. No restart is needed.
   then opens full screen like an app. Guided Access (Settings → Accessibility)
   keeps a child from leaving it.
 - **Android:** tap the full-screen button at the top right of the home screen.
-  App pinning (Settings → Security) keeps a child from leaving it.
+  If the site is served over HTTPS, Chrome's ⋮ menu → **Add to Home screen**
+  installs it as an app that opens full screen by itself. App pinning
+  (Settings → Security) keeps a child from leaving it.
+
+### Play without a network
+
+The site can save itself on the tablet, so it keeps working in the car or
+anywhere else the tablet can't reach your NAS.
+
+- It has to be served over **HTTPS**, for example through a reverse proxy with
+  a real certificate. Browsers don't allow this over plain
+  `http://<your-nas-ip>:8080`; the site still works there, just not offline.
+- Open it once while the tablet can reach the server. On an iPad, do that from
+  the home-screen icon, which keeps its own copy separate from Safari's.
+  Everything is saved on that visit, including games not played yet.
+- From then on it opens with or without a network. The server is still asked
+  first whenever it can be reached, so an update shows up the next time the
+  site is opened at home. If the tablet is online but can't reach the server,
+  the first screen can take a few seconds to appear.
 
 Find It speaks with the tablet's own text-to-speech voice, so it sounds like
 whatever voice the tablet has. If it is silent, turn the media volume up, check
 that a voice is installed in the tablet's text-to-speech settings, and tap the
-word at the top of the game to hear it again.
+word at the top of the game to hear it again. Without a network it only speaks
+if that voice is stored on the tablet rather than streamed.
 
 ## Run it on your own computer
 
@@ -120,6 +139,8 @@ There is no build step. Each game is a folder with two files.
 2. Create `site/games/<id>/game.css` for its styles.
 3. Add an entry to [site/js/registry.js](site/js/registry.js). That puts a card
    on the home screen and makes `#/<id>` open the game.
+4. Add the game's files to the `FILES` list in [site/sw.js](site/sw.js), so
+   the game is saved for playing without a network.
 
 Things to reuse:
 
@@ -158,6 +179,7 @@ the chosen scene once, then goes back to the picker.
 ```
 site/                 the website; this folder is all that gets served
   index.html          home screen and the shell that games run in
+  sw.js               saves the site on the tablet for playing offline
   css/base.css        palette and shared styles
   js/                 router, game list, sounds, effects
   games/<id>/         one folder per game

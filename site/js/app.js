@@ -88,7 +88,14 @@ function childProof() {
   }
 }
 
+// Saves the site on the tablet so it still opens with no network (see sw.js).
+// Browsers only offer this over HTTPS or on localhost.
+function initOffline() {
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(console.error);
+}
+
 childProof();
+initOffline();
 initAudio();
 initSpeech();
 holdButton(homeBtn, goHome);
