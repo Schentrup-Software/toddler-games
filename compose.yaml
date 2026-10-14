@@ -1,6 +1,6 @@
 # Build and run on any Docker host:
 #
-#   docker compose up --build -d      ->  http://localhost:8080
+#   docker compose up --build -d      ->  http://localhost:30678
 #
 # For TrueNAS, paste one of the snippets from the README into
 # Apps > Discover Apps > Custom App > Install via YAML instead.
@@ -10,5 +10,5 @@ services:
     build: .
     image: ghcr.io/schentrup-software/toddler-games:latest
     ports:
-      - "8080:8080" # host:container - change the left side if 8080 is taken
+      - "30678:8080" # host:container - change the left side if 30678 is taken
     restart: unless-stopped

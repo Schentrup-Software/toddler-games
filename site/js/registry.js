@@ -65,4 +65,19 @@ export const games = [
         </g>
       </svg>`,
   },
+  {
+    id: 'paint',
+    name: 'Paint',
+    color: 'peach',
+    art: `
+      <svg viewBox="0 0 120 120" aria-hidden="true" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M58 14C30 14 8 34 8 60s20 46 46 46c10 0 15-6 13-14-2-9 4-15 13-15h10c13 0 22-9 22-23 0-23-23-40-54-40Z" style="fill:var(--surface);stroke:var(--lilac-deep)"/>
+        <circle cx="34" cy="46" r="10" style="fill:var(--coral);stroke:var(--coral-deep)"/>
+        <circle cx="60" cy="34" r="10" style="fill:var(--butter);stroke:var(--butter-deep)"/>
+        <circle cx="86" cy="44" r="10" style="fill:var(--mint);stroke:var(--mint-deep)"/>
+        <circle cx="30" cy="74" r="10" style="fill:var(--sky);stroke:var(--sky-deep)"/>
+        <path d="M70 70 108 108" style="fill:none;stroke:var(--lilac-deep);stroke-width:9"/>
+        <path d="M48 48Q52 62 66 74L74 66Q62 52 48 48Z" style="fill:var(--pink);stroke:var(--pink-deep)"/>
+      </svg>`,
+  },
 ];

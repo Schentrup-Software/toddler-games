@@ -1,0 +1,175 @@
+.paint {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  background: var(--bg);
+  /* Colouring-book lines: darker than the ink the rest of the site draws with. */
+  --line: #2f2839;
+}
+
+/* ---------- Choosing a picture ---------- */
+
+.paint__picker {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  display: flex;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  /* The top padding keeps the pictures out from under the home button. */
+  padding:
+    calc(88px + var(--safe-top)) calc(24px + var(--safe-right))
+    calc(24px + var(--safe-bottom)) calc(24px + var(--safe-left));
+}
+
+.paint__choices {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  /* Centred while the pictures fit on screen; scrolls once there are more. */
+  margin: auto;
+}
+
+.paint__choice {
+  width: clamp(180px, 28vw, 320px);
+  margin: 1.5vmin;
+  padding: 10px 10px 8px;
+  border: 0;
+  border-radius: 30px;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 8px 0 rgba(var(--ink-rgb), .14), 0 16px 24px rgba(var(--ink-rgb), .1);
+  font: inherit;
+  cursor: pointer;
+  transition: transform .12s ease-out, box-shadow .12s ease-out;
+  animation: card-in .5s cubic-bezier(.3, 1.4, .6, 1) both;
+  animation-delay: calc(var(--i) * 60ms);
+}
+
+@media (orientation: portrait) {
+  .paint__choice { width: clamp(180px, 40vw, 340px); }
+}
+
+.paint__choice:active {
+  transform: translateY(6px);
+  box-shadow: 0 2px 0 rgba(var(--ink-rgb), .14), 0 6px 10px rgba(var(--ink-rgb), .1);
+}
+
+.paint__choice:focus-visible {
+  outline: 4px solid var(--ink);
+  outline-offset: 4px;
+}
+
+.paint__thumb {
+  display: block;
+  pointer-events: none;
+}
+
+.paint__thumb .paint__page { height: auto; }
+
+.paint__name {
+  display: block;
+  padding-top: 6px;
+  font-size: clamp(1.2rem, 2.6vmin, 1.6rem);
+  font-weight: 800;
+}
+
+/* ---------- Painting a picture ---------- */
+
+.paint__play {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  touch-action: none;
+}
+
+/* Back to the picture picker. Mirrors the home button in the opposite corner,
+   and needs the same press-and-hold. */
+.paint__back {
+  position: absolute;
+  top: calc(12px + var(--safe-top));
+  left: calc(12px + var(--safe-left));
+  z-index: 5;
+}
+
+/* The space the page is fitted into: below the two round buttons... */
+.paint__easel {
+  position: absolute;
+  top: calc(88px + var(--safe-top));
+  right: calc(16px + var(--safe-right));
+  bottom: calc(16px + var(--safe-bottom));
+  left: calc(16px + var(--safe-left));
+}
+
+/* ...or between them, where the screen is wide enough for that to be bigger. */
+@media (min-aspect-ratio: 3/2) {
+  .paint__easel {
+    top: calc(16px + var(--safe-top));
+    right: calc(88px + var(--safe-right));
+    left: calc(88px + var(--safe-left));
+  }
+}
+
+.paint__easel .paint__page {
+  height: 100%;
+  animation: paint-page-in .5s ease-out;
+}
+
+/* ---------- A picture, as drawn by game.js from pictures.js ---------- */
+
+.paint__page {
+  display: block;
+  width: 100%;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Parts to paint. --paint is the colour a part turns when it is touched. */
+.paint__page .p {
+  --paint: var(--c);
+  fill: var(--surface);
+  stroke: var(--line);
+  cursor: pointer;
+  transition: fill .3s ease-out;
+}
+
+.paint__page .p.d { --paint: var(--cd); }
+
+.paint__page .p.is-painted,
+.paint__page.is-done .p {
+  fill: var(--paint);
+}
+
+.paint__page.is-hinting .p:not(.is-painted) {
+  animation: paint-hint 1.8s ease-in-out infinite;
+}
+
+/* Detail classes used by pictures.js. Touches go through to the part below. */
+.paint__page .l { fill: none; stroke: var(--line); pointer-events: none; }
+.paint__page .k { fill: var(--line); stroke: none; pointer-events: none; }
+.paint__page .w { fill: var(--surface); stroke: var(--line); pointer-events: none; }
+
+.paint__mat {
+  fill: var(--bg);
+  fill-rule: evenodd;
+  stroke: none;
+}
+
+.paint__thumb .paint__mat { fill: var(--surface); }
+
+.paint__edge {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 8;
+  pointer-events: none;
+}
+
+@keyframes paint-page-in {
+  from { opacity: 0; transform: scale(.96); }
+}
+
+/* Quick through the colour and slow on white, so that a glowing part can't be
+   mistaken for a painted one. */
+@keyframes paint-hint {
+  from { animation-timing-function: ease-in; }
+  50% { fill: var(--paint); animation-timing-function: ease-out; }
+}

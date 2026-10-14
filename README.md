@@ -10,6 +10,7 @@ nothing is fetched from the internet once it is running on your network.
 | **Shapes** | Drag each shape into the hole it fits. Fill all three for a celebration and a new set. |
 | **Music** | A rainbow xylophone. Tap a bar, slide across them, or use both hands. |
 | **Find It** | Pick a picture: garden, bedroom, farm, kitchen or beach. A word is then shown and spoken ("Find the duck"). Touch that thing in the picture. Touching anything else names it instead ("That's the cat"), and the answer wiggles after two misses. Five scenes, 55 words. |
+| **Paint** | Pick a picture: fish, butterfly, house, car, rocket or rainbow. It starts as black lines on a white page. Touch any part and it fills with its colour. Colour the whole picture for a celebration. If nothing is touched for a while, the white parts glow in their colours. |
 
 Built for small hands:
 
@@ -17,7 +18,7 @@ Built for small hands:
 - Big targets, and every finger on the screen counts.
 - The home button (top right, in a game) needs a **press-and-hold**, so a stray
   palm doesn't end the game. So does the button at the top left of a Find It
-  scene, which goes back to the pictures.
+  scene or a Paint picture, which goes back to the pictures.
 - Zooming, text selection and long-press menus are switched off.
 
 ## Host it on TrueNAS
@@ -173,6 +174,32 @@ Add a thing to an existing scene, or add a whole new scene to the `SCENES`
 list at the bottom of the file. A new scene shows up on the picker by itself,
 with a small copy of the scene as its picture. The game asks for every word in
 the chosen scene once, then goes back to the picker.
+
+## Add pictures to Paint
+
+The pictures live in
+[site/games/paint/pictures.js](site/games/paint/pictures.js). Each one is a
+name and an SVG drawing on a 1000 x 750 page:
+
+```js
+{
+  name: 'Ball',
+  art: `
+    <rect class="p c-sky" width="1000" height="750"/>
+    <circle class="p d c-coral" cx="500" cy="400" r="220"/>
+    <path class="l" d="M300 400H700"/>`,
+}
+```
+
+Every shape with the class `p` is a part to paint. It starts white and turns
+its palette colour when touched: `c-coral` for the colour, plus `d` for the
+deeper tone. Later shapes cover earlier ones, so the sky above is one big
+rectangle with the ball drawn over it. Shapes without `p` are detail that
+can't be touched: `l` is a line, `k` is solid and `w` stays white.
+
+Add the picture to the `PICTURES` list at the bottom of the file and it shows
+up on the picker, already coloured in. Keep parts big enough for a small
+finger; around 70 units across is the least that works.
 
 ## Layout
 
